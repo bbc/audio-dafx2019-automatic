@@ -19,13 +19,13 @@ This model is provided as supplementary material for the following paper:
 
 The model has been found to be working with the following versions
 
-| -------------- | --------- |
+
 | Module         | Version   |
 | -------------- | --------- |
 | `python3`      | 3.6.7     |
 | `tensorflow`   | 1.12.0    |
 | `keras`        | 2.2.4     |
-| -------------- | --------- |
+
 
 There are also several other requirements listed in `requirements.txt`
 
