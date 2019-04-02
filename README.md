@@ -38,7 +38,8 @@ git clone git@github.com:bbc/audio-dafx2019-automatic.git
 
 cd audio-dafx2019-automatic
 
-curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/disc001/music_speech_sfx_discriminator_vggish_gtzan.pkl
+curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.h5
+curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.json
 
 (optional) 
 virtualenv venv
