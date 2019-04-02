@@ -75,10 +75,23 @@ sox input.wav -ar 22050 output.wav
 Suppose your files are in a path `audio/`, you can classify the files in that folder by running:
 
 ```
-python3 classify.py music_speech_sfx_discriminator_vggish_gtzan.pkl audio/
+python3 classify.py music_speech_sfx_discriminator_vggish_gtzan audio/
 ```
 
-You will then have a file ```output.csv``` with the results, happy classifying~~!
+You will then have a file ```output.csv``` with the results:
+
+```
+cat output.csv
+```
+
+
+Happy classifying~~!
+
+## Contact
+
+Questions or issues about the model should either be raised here or addressed to Emmanouil Theofanis Chourdakis <e.t.chourdakis__Aaa.t!__qmul.ac.uk>
+
+
 
 
 
