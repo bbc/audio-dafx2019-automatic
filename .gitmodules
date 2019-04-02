@@ -1,0 +1,3 @@
+[submodule "VGGish"]
+	path = VGGish
+	url = https://github.com/DTaoo/VGGish.git
