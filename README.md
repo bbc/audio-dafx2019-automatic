@@ -5,7 +5,7 @@
 This model is provided as supplementary material for the following paper:
 
 ```
-@article{choudakisward2019dafx,
+@inproceedings{choudakisward2019dafx,
   title={Modelling Human Experts' Narrative Importance Assignments in a Radio Drama Using Mixture Models},
   author={Chourdakis, E. T. and Ward, L. and Paradis, M. and Reiss, J.D. },
   year={2019},
