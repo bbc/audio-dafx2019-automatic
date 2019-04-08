@@ -6,7 +6,7 @@ This model is provided as supplementary material for the following paper:
 
 ```
 @inproceedings{choudakisward2019dafx,
-  title={MODELLING EXPERTS’ DECISIONS ON ASSIGNING NARRATIVE IMPORTANCES OF
+  title={MODELLING EXPERTS' DECISIONS ON ASSIGNING NARRATIVE IMPORTANCES OF
 OBJECTS IN A RADIO DRAMA MIX},
   author={Chourdakis, E. T. and Ward, L. and Paradis, M. and Reiss, J.D. },
   year={2019},
