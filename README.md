@@ -6,7 +6,8 @@ This model is provided as supplementary material for the following paper:
 
 ```
 @inproceedings{choudakisward2019dafx,
-  title={Modelling Human Experts' Narrative Importance Assignments in a Radio Drama Using Mixture Models},
+  title={MODELLING EXPERTS’ DECISIONS ON ASSIGNING NARRATIVE IMPORTANCES OF
+OBJECTS IN A RADIO DRAMA MIX},
   author={Chourdakis, E. T. and Ward, L. and Paradis, M. and Reiss, J.D. },
   year={2019},
   booktitle={Int. Conf. Digital Audio Effects},
