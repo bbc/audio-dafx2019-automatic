@@ -41,10 +41,10 @@ cd audio-dafx2019-automatic
 curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.h5
 curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.json
 
-(optional) 
+# (optional) 
 virtualenv venv
 source venv/bin/activate
-(/optional)
+# (/optional)
 
 pip3 install -r requirements.txt
 ```
@@ -67,7 +67,7 @@ head -n 14 vggish_params.py
 
 ## Classifying audio to speech/music/SFX
 
-Suppose you have a bunch of track files you need to classify to either speech/music or sound effects. First, you need to make sure that they are mono tracks 22050Hz/16bit (we recommend using [SoX](http://sox.sourceforge.net/)) for resampling:
+Suppose you have a bunch of track files you need to classify to either speech/music or sound effects. First, you need to make sure that they are mono tracks 22050Hz/16bit (we recommend using [SoX](http://sox.sourceforge.net/)):
 
 ```
 sox -ar 22050 -B -b 16 input.wav output.wav remix 1,2
