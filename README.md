@@ -89,6 +89,10 @@ cat output.csv
 
 Happy classifying~~!
 
+## Training the Music/Speech/SFx classification model
+
+Please see [MusicSpeechSFxDiscrimination.ipynb](https://github.com/bbc/audio-dafx2019-automatic/blob/master/MusicSpeechSFxDiscrimination.ipynb)
+
 ## Contact
 
 Questions or issues about the model should either be raised here or addressed to Emmanouil Theofanis Chourdakis <e.t.chourdakis__Aaa.t!__qmul.ac.uk>
