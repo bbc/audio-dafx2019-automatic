@@ -38,10 +38,9 @@ Please run the following:
 git clone git@github.com:bbc/audio-dafx2019-automatic.git
 
 cd audio-dafx2019-automatic
-
-curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.h5
-curl -O https://github.com/bbc/audio-dafx2019-automatic/releases/download/v002/music_speech_sfx_discriminator_vggish_gtzan.json
-
+```
+Download the `.h5` and `.json` files from [v002](https://github.com/bbc/audio-dafx2019-automatic/releases/tag/v002) to the same directory.
+```
 # (optional) 
 virtualenv venv
 source venv/bin/activate
