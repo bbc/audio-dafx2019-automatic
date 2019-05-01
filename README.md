@@ -76,7 +76,7 @@ sox  input.wav -b 16 output.wav rate 22050 remix 1,2
 Suppose your files are in a path `audio/`, you can classify the files in that folder by running:
 
 ```
-python3 classify.py music_speech_sfx_discriminator_vggish_gtzan audio/
+python3 classify.py --model music_speech_sfx_discriminator_vggish_gtzan audio/
 ```
 
 You will then have a file ```output.csv``` with the results:
