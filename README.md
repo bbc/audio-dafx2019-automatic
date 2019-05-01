@@ -70,7 +70,7 @@ head -n 14 vggish_params.py
 Suppose you have a bunch of track files you need to classify to either speech/music or sound effects. First, you need to make sure that they are mono tracks 22050Hz/16bit (we recommend using [SoX](http://sox.sourceforge.net/)):
 
 ```
-sox  input.wav -b 16 output.wav rate 22050 remix 1,2
+sox  input.wav -b 16 output.wav rate 22050 remix 1-2
 ```
 
 Suppose your files are in a path `audio/`, you can classify the files in that folder by running:
