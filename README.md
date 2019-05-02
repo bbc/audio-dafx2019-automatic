@@ -27,7 +27,6 @@ The model has been found to be working with the following versions
 | `tensorflow`   | 1.12.0    |
 | `keras`        | 2.2.4     |
 
-
 There are also several other requirements listed in `requirements.txt`
 
 ## Installation 
@@ -87,6 +86,19 @@ cat output.csv
 
 
 Happy classifying~~!
+
+## Assigning importances to a directory of radio track stems
+
+Suppose you have a folder of stereo stems (sampling rate does not matter) ```stems/``` containing `.wav` files. In order to assign an importance level ( 0 -- low importance, 3 -- essential importance) to each of those, download the models seen in the previous section (Installation) to the same folder as `assign.py` and then run:
+```
+python3 assign.py stems
+```
+
+This will generate a file `output.csv` with the list of filenames for each stem, as well features and assigned importances. For more options see
+
+```
+python3 assign.py --help
+```
 
 ## Training the Music/Speech/SFx classification model
 
