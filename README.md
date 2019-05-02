@@ -1,4 +1,4 @@
-# Audio model for Speech/Music/SFX discrimination based on VGGish and Modelling of Expert's Decisions on assigning importances on radio objects
+# Audio model for Speech/Music/SFX discrimination based on VGGish and Modelling of Experts' Decisions on assigning importances on radio objects
 
 ## Introduction 
 
