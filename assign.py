@@ -11,6 +11,9 @@ narrative importances. More specifically, the information extracted is:
     1. How much of the file is music, or speech.
     2. The total duration of the file.
     3. The True Peak-to-Relative loudness ratio
+    
+It then loads uses a mixture model to assign importances, saves the results
+to a .csv file.
 """
 
 import argparse
@@ -26,7 +29,51 @@ import vggish_input
 import pandas as pd
 import tqdm
 import pyloudness as ld
+import pyro
+from pyro import poutine
+from pyro.infer import infer_discrete
+import joblib
+import argparse
+import torch
 
+# Functions for the mixture model
+def model_b(data):
+    
+    importances = pyro.sample("importances", pyro.distributions.Dirichlet(2*torch.ones(4)))
+    with pyro.plate('components', 4) as ind:
+    
+        rms_alphas = pyro.sample('rms_alphas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4)))
+        rms_betas = pyro.sample('rms_betas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4)))
+        
+        pspeech_alphas = pyro.sample('pspeech_alphas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4))) 
+        pspeech_betas = pyro.sample('pspeech_betas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4)))
+        
+        pmusic_alphas = pyro.sample('pmusic_alphas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4))) 
+        pmusic_betas = pyro.sample('pmusic_betas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4)))
+
+        dur_alphas = pyro.sample('dur_alphas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4))) 
+        dur_betas = pyro.sample('dur_betas', pyro.distributions.Gamma(concentration=7.5*torch.ones(4), rate=torch.ones(4)))
+                
+    with pyro.plate('observations', data.size()[1]) as ind:
+      
+         assigned = pyro.sample("assigned", pyro.distributions.Categorical(importances), infer={"enumerate": "parallel"}).long()
+         rms = pyro.sample("rms", pyro.distributions.Beta(rms_alphas[assigned], rms_betas[assigned]), obs=data[1,ind], infer={"enumerate": "parallel"})
+         pspeech = pyro.sample("pspeech", pyro.distributions.Beta(pspeech_alphas[assigned],pspeech_betas[assigned]), 
+                               obs=data[2,ind], infer={"enumerate": "parallel"})
+         pmusic = pyro.sample("pmusic", pyro.distributions.Beta(pmusic_alphas[assigned],pmusic_betas[assigned]), 
+                               obs=data[3,ind], infer={"enumerate": "parallel"})
+         dur = pyro.sample("dur", pyro.distributions.Gamma(concentration=dur_alphas[assigned], rate=dur_betas[assigned]), obs=data[4,ind], infer={"enumerate": "parallel"})
+        
+    
+    return assigned, rms 
+
+def classifier(data, temperature=0):
+    inferred_model = infer_discrete(trained_model, temperature=temperature,
+                                    first_available_dim=-2)  # avoid conflict with data plate
+    trace = poutine.trace(inferred_model).get_trace(data)
+    return trace.nodes["assigned"]["value"]    
+
+# Constants for feature extraction
 hopSize = 512
 frameSize = 2048
 sampleRate = 22050
@@ -34,6 +81,7 @@ sampleRate = 22050
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Extracts features and assigns importances to .wav tracks in a directory")
     parser.add_argument('path', help='filename or directory path of .wav files to assign importances')
+    parser.add_argument('--joblib', help='joblib file of the guide trace ', type=str, default='guide_trace.joblib')    
     parser.add_argument('--model', help='name of the speech/music/sfx model to work with, must be in the same directory', type=str,  default='music_speech_sfx_discriminator_vggish')
     parser.add_argument('--output', help='output csv file of two columns, one with the filename, the other with its assigned importance', type=str, default='output.csv')
     
@@ -133,10 +181,34 @@ if __name__ == "__main__":
             'p_speech' : p_speech,
             'tpti' : true_peak/integrated_loudness,
             'total_duration': sliced_duration,
-            
-            
         })
     
+    # Create initial dataframe with the features 
     df = pd.DataFrame.from_records(records)
-    df.to_csv(args.output)
     
+    # Load the guide trace
+    guide_trace = joblib.load(args.joblib)
+    trained_model = poutine.replay(model_b, trace=guide_trace) # see notebook for this line
+    
+    # We are trying to decide an importance assignment value from the data given 4 features.
+    # Our feature matrix (values) is therefore Nx4. The model (and therefore the classifier)
+    # expects a Nx5 data matrix so we will add dummy values as the first column. Also convert it to
+    # tensor.
+    
+    values = df[['tpti','p_speech','p_music','total_duration']].to_numpy()
+    dummy_assignments = np.zeros((values.shape[0],1))
+    data = np.hstack([dummy_assignments, values]).T
+    
+    # Apply some noise (like we did in the training)
+    data[1,:] = data[1,:]*0.8 + 0.1 + np.random.randn(*data[1,:].shape)*0.001
+    data[2,:] = data[2,:]*0.8 + 0.1 + np.random.randn(*data[2,:].shape)*0.001
+    data[3,:] = data[3,:]*0.8 + 0.1 + np.random.randn(*data[3,:].shape)*0.001
+
+    # Convert ot tensor
+    data = torch.tensor(data).float()
+    
+    # Predict assignments
+    assign_pred = classifier(data)
+    df['assigned'] = assign_pred
+    print(df[['asset_fname','assigned']])
+    df.to_csv(args.output)    
