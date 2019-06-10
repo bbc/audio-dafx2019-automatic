@@ -38,7 +38,7 @@ git clone git@github.com:bbc/audio-dafx2019-automatic.git
 
 cd audio-dafx2019-automatic
 ```
-Download the `.h5` and `.json` files from [v002](https://github.com/bbc/audio-dafx2019-automatic/releases/tag/v002) to the same directory.
+Download the `.h5` and `.json` files from [v004](https://github.com/bbc/audio-dafx2019-automatic/releases/tag/v004) to the same directory.
 ```
 # (optional) 
 virtualenv venv
@@ -75,7 +75,7 @@ sox  input.wav -b 16 output.wav rate 22050 remix 1-2
 Suppose your files are in a path `audio/`, you can classify the files in that folder by running:
 
 ```
-python3 classify.py --model music_speech_sfx_discriminator_vggish_gtzan audio/
+python3 classify.py --model music_speech_sfx_discriminator audio/
 ```
 
 You will then have a file ```output.csv``` with the results:
